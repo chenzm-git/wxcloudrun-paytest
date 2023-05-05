@@ -159,11 +159,11 @@ public class PayService {
 
                     String signStr = "wx9ab70e5c6f40b297\n" + time + "\n" + apiV3key + "\n" + "prepay_id=" + jsonObject.get("prepay_id") + "\n";
                     try{
-                        String sign = SignHelper.sign(signStr, privateKey);
+                        String sign = SignHelper.sign(signStr, privateKey).replaceAll("\r\n", "");
                         String paySign = new sun.misc.BASE64Encoder().encode(sign.getBytes());
 
                         jsonObject.put("signStr", signStr);
-                        jsonObject.put("paySign", paySign);
+                        jsonObject.put("paySign", sign);
                     }
                     catch (Exception e){
                         e.printStackTrace();

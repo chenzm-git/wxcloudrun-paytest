@@ -49,7 +49,7 @@ public class SignHelper {
     public static String sign(String bizContent, String privateKey) throws Exception {
         //解密私钥
         byte[] keyBytes = decryptBASE64(privateKey);
-        // byte[] keyBytes = privateKey.getBytes();
+        //byte[] keyBytes = privateKey.getBytes();
 
         //构造PKCS8EncodedKeySpec对象
         PKCS8EncodedKeySpec pkcs8EncodedKeySpec = new PKCS8EncodedKeySpec(keyBytes);
@@ -228,6 +228,9 @@ public class SignHelper {
                     "zsPePrPUniUSaLc+ybX1qD7p");
 
             System.out.println(sign.replaceAll("\r\n", ""));
+
+            String paySign = new sun.misc.BASE64Encoder().encode(sign.getBytes());
+            System.out.println(paySign);
         }
         catch (Exception e){
             e.printStackTrace();

@@ -154,12 +154,12 @@ public class PayService {
                     String time = System.currentTimeMillis()/1000L + "";
                     //组装参数
                     JSONObject jsonObject = new JSONObject(ret);
-                    jsonObject.optString("timeStamp", time);
-                    jsonObject.optString("nonceStr", apiV3key);
+                    jsonObject.put("timeStamp", time);
+                    jsonObject.put("nonceStr", apiV3key);
 
                     String signStr = "wx9ab70e5c6f40b297\n" + time + "\n" + apiV3key + "\nprepay_id=" + jsonObject.get("prepay_id");
                     try{
-                        jsonObject.optString("paySign", SignHelper.sign(signStr, privateKey));
+                        jsonObject.put("paySign", SignHelper.sign(signStr, privateKey));
                     }
                     catch (Exception e){
                         e.printStackTrace();

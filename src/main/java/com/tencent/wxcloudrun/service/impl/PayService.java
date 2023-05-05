@@ -157,8 +157,9 @@ public class PayService {
                     jsonObject.put("timeStamp", time);
                     jsonObject.put("nonceStr", apiV3key);
 
-                    String signStr = "wx9ab70e5c6f40b297\n" + time + "\n" + apiV3key + "\nprepay_id=" + jsonObject.get("prepay_id");
+                    String signStr = "wx9ab70e5c6f40b297\n" + time + "\n" + apiV3key + "\n" + "prepay_id=" + jsonObject.get("prepay_id") + "\n";
                     try{
+                        jsonObject.put("signStr", signStr);
                         jsonObject.put("paySign", SignHelper.sign(signStr, privateKey));
                     }
                     catch (Exception e){

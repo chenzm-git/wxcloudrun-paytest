@@ -1,5 +1,6 @@
 package com.tencent.wxcloudrun.service.impl;
 
+import com.tencent.wxcloudrun.util.SignHelper;
 import com.wechat.pay.contrib.apache.httpclient.WechatPayHttpClientBuilder;
 import com.wechat.pay.contrib.apache.httpclient.auth.*;
 import com.wechat.pay.contrib.apache.httpclient.cert.CertificatesManager;
@@ -43,8 +44,7 @@ public class PayService {
     /**
      * 私钥
      */
-    private String privateKey = "-----BEGIN PRIVATE KEY-----\n" +
-            "MIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDF4TWVI2Fczjfx\n" +
+    private String privateKey = "MIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDF4TWVI2Fczjfx\n" +
             "UPx2sI0ulY+t/yJk4Fn3lbetmdKY8Yc7Aj7l8XChL0J54QeJSEHoFIZZJcjAtkhc\n" +
             "JQE+JY/aN/Ux63ekq31sBmiKS5sD6lPdDXbtoBJqyEsYu9TfCTqczl7WAMQeRkQH\n" +
             "FW5FgpRfKh2fFbg89sS+QsicZiVPS5tE9Gngw+k2APYDRxVQeV4nb5jo8/BZqeGn\n" +
@@ -69,8 +69,7 @@ public class PayService {
             "kda7tqTEleSUNFY0EcMIX23kML+o+rTei3vxyT05AoGBANGhotfDF2D/ixBMp7Ql\n" +
             "MlbL3ej1GHR0co8kAn28lBbPTe5wAs+i1SxkNZnHuCmwJjV6D5ia2MZiUxSFl6PY\n" +
             "PLkCfc4RanbUNwkV7GGDqKpLSzKlklTd0ghx9lXgV8gtmP9QLYHx3rOBWPVA0mUg\n" +
-            "zsPePrPUniUSaLc+ybX1qD7p\n" +
-            "-----END PRIVATE KEY-----";
+            "zsPePrPUniUSaLc+ybX1qD7p";
 
 
     public void setup() {
@@ -151,6 +150,23 @@ public class PayService {
                 if (statusCode == 200 || statusCode == 204) {
                     ret = EntityUtils.toString(response.getEntity());
                     log.info("success,return body = " + ret);
+
+                    String time = System.currentTimeMillis()/1000L + "";
+                    //组装参数
+                    JSONObject jsonObject = new JSONObject(ret);
+                    jsonObject.optString("timeStamp", time);
+                    jsonObject.optString("nonceStr", apiV3key);
+
+                    String signStr = "wx9ab70e5c6f40b297\n" + time + "\n" + apiV3key + "\nprepay_id=" + jsonObject.get("prepay_id");
+                    try{
+                        jsonObject.optString("paySign", SignHelper.sign(signStr, privateKey));
+                    }
+                    catch (Exception e){
+                        e.printStackTrace();
+                    }
+
+                    return jsonObject.toString();
+
                 } else {
                     log.info("failed,resp code = " + statusCode+ ",return body = " + EntityUtils.toString(response.getEntity()));
                 }
@@ -207,6 +223,12 @@ public class PayService {
 
         //openid = "oy5vk5dB6ahNPJlkCNrC5FOpMyEE";
         return openid;
+    }
+
+
+    private String sha256(){
+
+        return "";
     }
 
 }

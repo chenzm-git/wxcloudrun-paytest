@@ -62,7 +62,8 @@ public class SignHelper {
         signature.initSign(privateKey2);
         signature.update(bizContent.getBytes());
 
-        return encryptBASE64(signature.sign());
+        return Base64.getEncoder().encodeToString(signature.sign());
+        //return encryptBASE64(signature.sign());
     }
 
     /**
@@ -199,7 +200,7 @@ public class SignHelper {
 
     public static void main(String[] args){
         try{
-            String sign = SignHelper.sign("wx9ab70e5c6f40b297\n1683280962\nqwertgbvfdj5323drtj74dfr78jyttew\nprepay_id=wx05180242831895a0e9c8ed01ccc8090000\n",
+            String sign = SignHelper.sign("wx9ab70e5c6f40b297\n1683280962\nASDF1234VCXZQWER\nprepay_id=wx05180242831895a0e9c8ed01ccc8090000\n",
                     "MIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDF4TWVI2Fczjfx\n" +
                     "UPx2sI0ulY+t/yJk4Fn3lbetmdKY8Yc7Aj7l8XChL0J54QeJSEHoFIZZJcjAtkhc\n" +
                     "JQE+JY/aN/Ux63ekq31sBmiKS5sD6lPdDXbtoBJqyEsYu9TfCTqczl7WAMQeRkQH\n" +
@@ -228,9 +229,6 @@ public class SignHelper {
                     "zsPePrPUniUSaLc+ybX1qD7p");
 
             System.out.println(sign.replaceAll("\r\n", ""));
-
-            String paySign = new sun.misc.BASE64Encoder().encode(sign.getBytes());
-            System.out.println(paySign);
         }
         catch (Exception e){
             e.printStackTrace();

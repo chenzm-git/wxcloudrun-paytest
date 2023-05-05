@@ -41,6 +41,8 @@ public class PayService {
     /** 商户APIV3密钥 */
     public static String apiV3key = "qwertgbvfdj5323drtj74dfr78jyttew";
 
+    public static String nonceStr = "ASDF1234VCXZQWER";
+
     /**
      * 私钥
      */
@@ -155,9 +157,9 @@ public class PayService {
                     //组装参数
                     JSONObject jsonObject = new JSONObject(ret);
                     jsonObject.put("timeStamp", time);
-                    jsonObject.put("nonceStr", apiV3key);
+                    jsonObject.put("nonceStr", nonceStr);
 
-                    String signStr = "wx9ab70e5c6f40b297\n" + time + "\n" + apiV3key + "\n" + "prepay_id=" + jsonObject.get("prepay_id") + "\n";
+                    String signStr = "wx9ab70e5c6f40b297\n" + time + "\n" + nonceStr + "\n" + "prepay_id=" + jsonObject.get("prepay_id") + "\n";
                     try{
                         String sign = SignHelper.sign(signStr, privateKey).replaceAll("\r\n", "");
                         String paySign = new sun.misc.BASE64Encoder().encode(sign.getBytes());

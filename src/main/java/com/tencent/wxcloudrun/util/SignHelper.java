@@ -199,10 +199,7 @@ public class SignHelper {
 
     public static void main(String[] args){
         try{
-            String sign = SignHelper.sign("wx8888888888888888\n" +
-                    "1414561699\n" +
-                    "5K8264ILTKCH16CQ2502SI8ZNMTM67VS\n" +
-                    "prepay_id=wx201410272009395522657a690389285100",
+            String sign = SignHelper.sign("wx9ab70e5c6f40b297\n1683280962\nqwertgbvfdj5323drtj74dfr78jyttew\nprepay_id=wx05180242831895a0e9c8ed01ccc8090000\n",
                     "MIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDF4TWVI2Fczjfx\n" +
                     "UPx2sI0ulY+t/yJk4Fn3lbetmdKY8Yc7Aj7l8XChL0J54QeJSEHoFIZZJcjAtkhc\n" +
                     "JQE+JY/aN/Ux63ekq31sBmiKS5sD6lPdDXbtoBJqyEsYu9TfCTqczl7WAMQeRkQH\n" +
@@ -230,7 +227,7 @@ public class SignHelper {
                     "PLkCfc4RanbUNwkV7GGDqKpLSzKlklTd0ghx9lXgV8gtmP9QLYHx3rOBWPVA0mUg\n" +
                     "zsPePrPUniUSaLc+ybX1qD7p");
 
-            System.out.println(sign);
+            System.out.println(sign.replaceAll("\r\n", ""));
         }
         catch (Exception e){
             e.printStackTrace();

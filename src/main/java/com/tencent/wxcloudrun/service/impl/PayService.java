@@ -160,7 +160,7 @@ public class PayService {
                     String signStr = "wx9ab70e5c6f40b297\n" + time + "\n" + apiV3key + "\n" + "prepay_id=" + jsonObject.get("prepay_id") + "\n";
                     try{
                         jsonObject.put("signStr", signStr);
-                        jsonObject.put("paySign", SignHelper.sign(signStr, privateKey));
+                        jsonObject.put("paySign", SignHelper.sign(signStr, privateKey).replaceAll("\r\n", ""));
                     }
                     catch (Exception e){
                         e.printStackTrace();

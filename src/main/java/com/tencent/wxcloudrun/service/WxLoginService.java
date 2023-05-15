@@ -44,21 +44,27 @@ public class WxLoginService {
      * @return 用户信息
      */
     public UserInfo register(OpenId openId){
-        UserInfo userInfo = new UserInfo();
 
-        //生成用户ID
-        String userId = UUID.randomUUID().toString();
-        userInfo.setUserId(userId);
+        //先判断是否已存在用户
+        UserInfo userInfo = userServiceDao.queryByOpenId(openId.getOpenId());
 
-        userInfo.setRegType(2);
-        userInfo.setWxOpenId(openId.getOpenId());
+        if (userInfo == null){
+            userInfo = new UserInfo();
 
-        userServiceDao.addUserInfo(userInfo);
+            //生成用户ID
+            String userId = UUID.randomUUID().toString();
+            userInfo.setUserId(userId);
 
-        //增加默认使用次数
-        UserUsage userUsage = new UserUsage();
-        userUsage.setUserId(userId);
-        userServiceDao.addUsage(userUsage);
+            userInfo.setRegType(2);
+            userInfo.setWxOpenId(openId.getOpenId());
+
+            userServiceDao.addUserInfo(userInfo);
+
+            //增加默认使用次数
+            UserUsage userUsage = new UserUsage();
+            userUsage.setUserId(userId);
+            userServiceDao.addUsage(userUsage);
+        }
 
         return userInfo;
     }

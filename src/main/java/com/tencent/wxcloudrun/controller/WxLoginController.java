@@ -26,6 +26,15 @@ public class WxLoginController {
     @Autowired
     private WxLoginService wxLoginService;
 
+    @ApiOperation(notes = "根据jscode查询openid", value = "根据jscode查询openid")
+    @PostMapping(value = "/user/jxcode")
+    public String jxcode(@RequestBody String code){
+        log.info("code 输入 : " + code);
+        String output = wxLoginService.jxcode(code);
+        log.info("openid 输出 : " + output);
+        return output;
+    }
+
     @ApiOperation(notes = "查询用户列表", value = "查询用户列表")
     @PostMapping(value = "/user/list")
     public List<UserInfo> queryUserInfo(){

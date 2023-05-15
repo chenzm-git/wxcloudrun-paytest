@@ -120,8 +120,8 @@ public class WxLoginService {
 
     /**
      * 获取openid
-     * @param code
-     * @return
+     * @param code jdcode
+     * @return openid
      */
     public String jxcode(String code){
 

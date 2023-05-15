@@ -1,5 +1,6 @@
 package com.tencent.wxcloudrun.service.impl;
 
+import com.tencent.wxcloudrun.service.WxLoginService;
 import com.tencent.wxcloudrun.util.SignHelper;
 import com.wechat.pay.contrib.apache.httpclient.WechatPayHttpClientBuilder;
 import com.wechat.pay.contrib.apache.httpclient.auth.*;
@@ -15,6 +16,7 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.ByteArrayInputStream;
@@ -31,6 +33,9 @@ import java.sql.Time;
 @Service
 @Slf4j
 public class PayService {
+
+    @Autowired
+    private WxLoginService wxLoginService;
 
     private CloseableHttpClient httpClient;
 
@@ -116,7 +121,7 @@ public class PayService {
         }
 
         //现有code获取openid
-        String openid = jxcode(code);
+        String openid = wxLoginService.jxcode(code);
         
         if (openid != null && !"".equals(openid)){
 
@@ -189,48 +194,6 @@ public class PayService {
 
         return ret;
     }
-
-    /**
-     * 获取openid
-     * @param code
-     * @return
-     */
-    private String jxcode(String code){
-
-        String openid = "";
-
-        String param = "?appid=wx9ab70e5c6f40b297&secret=b2d1af9f78af07fad1c101db95f237d5&grant_type=authorization_code&js_code=" + code;
-
-        CloseableHttpClient httpClient = HttpClients.createDefault();
-
-        //请求URL
-        HttpGet httpGet = new HttpGet("https://api.weixin.qq.com/sns/jscode2session" + param);
-
-        try {
-            CloseableHttpResponse response = httpClient.execute(httpGet);
-
-            int statusCode = response.getStatusLine().getStatusCode();
-            if (statusCode == 200 || statusCode == 204) {
-                String retStr = EntityUtils.toString(response.getEntity());
-                log.info("return : " + retStr);
-                JSONObject jsonObject = new JSONObject(retStr);
-                if (jsonObject.has("openid")){
-                    openid = jsonObject.getString("openid");
-                }
-            } else {
-                log.info("failed,resp code = " + statusCode+ ",return body = " + EntityUtils.toString(response.getEntity()));
-            }
-
-            response.close();
-        }
-        catch (Exception e){
-            e.printStackTrace();
-        }
-
-        //openid = "oy5vk5dB6ahNPJlkCNrC5FOpMyEE";
-        return openid;
-    }
-
 
     private String sha256(){
 

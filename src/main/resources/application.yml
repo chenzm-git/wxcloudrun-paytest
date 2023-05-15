@@ -5,9 +5,9 @@ server:
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://${MYSQL_ADDRESS}/${MYSQL_DATABASE:springboot_demo}
-    username: ${MYSQL_USERNAME}
-    password: ${MySQL_PASSWORD}
+    url: jdbc:mysql://139.224.36.239:3306/gpt
+    username: gpt
+    password: gpt
   mvc:
     view:
       suffix: .html
@@ -15,3 +15,6 @@ spring:
 
 mybatis:
   mapper-locations: classpath*:mapper/*Mapper.xml
+  configuration:
+    map-underscore-to-camel-case: true
+

@@ -32,6 +32,9 @@ public interface UserServiceDao {
     @Select("select user_id,user_name,reg_type,email,wx_open_id,wx_union_id,reg_time,nick_name,avater,user_passwd from ts_user where wx_open_id=#{openId}")
     UserInfo queryByOpenId(String openId);
 
+    @Select("select user_id,user_name,reg_type,email,wx_open_id,wx_union_id,reg_time,nick_name,avater,user_passwd from ts_user where wx_union_id=#{unionId}")
+    UserInfo queryByUnionId(String unionId);
+
     @Select("select user_id,allow_count,used_count,allow_token,used_token from ts_user_usage where user_id=#{userId}")
     UserUsage queryUsage(String userId);
 

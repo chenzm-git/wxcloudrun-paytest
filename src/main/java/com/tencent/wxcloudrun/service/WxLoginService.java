@@ -57,6 +57,7 @@ public class WxLoginService {
 
             userInfo.setRegType(2);
             userInfo.setWxOpenId(openId.getOpenId());
+            userInfo.setWxUnionId(openId.getUnionId());
 
             userServiceDao.addUserInfo(userInfo);
 
@@ -75,7 +76,14 @@ public class WxLoginService {
      * @return 用户信息
      */
     public UserInfo queryByOpenId(OpenId openId){
-        return userServiceDao.queryByOpenId(openId.getOpenId());
+
+        //有unionId优先按unionId查
+        if (openId.getUnionId() != null && !"".equals(openId.getUnionId())){
+            return userServiceDao.queryByUnionId(openId.getUnionId());
+        }
+        else{
+            return userServiceDao.queryByOpenId(openId.getOpenId());
+        }
     }
 
     /**
@@ -103,7 +111,7 @@ public class WxLoginService {
     public UserUsage updateUsage(UserUsed userUsed){
 
         //查询用户信息
-        UserInfo userInfo = userServiceDao.queryByOpenId(userUsed.getOpenId());
+        UserInfo userInfo = userServiceDao.queryByOpenId(userUsed.getUnionId());
 
         if (userInfo != null){
 
@@ -129,9 +137,9 @@ public class WxLoginService {
      * @param code jdcode
      * @return openid
      */
-    public String jxcode(String code){
+    public OpenId jxcode(String code){
 
-        String openid = "";
+        OpenId openId = new OpenId();
 
         String param = "?appid=wx9ab70e5c6f40b297&secret=b2d1af9f78af07fad1c101db95f237d5&grant_type=authorization_code&js_code=" + code;
 
@@ -149,7 +157,12 @@ public class WxLoginService {
                 log.info("return : " + retStr);
                 JSONObject jsonObject = new JSONObject(retStr);
                 if (jsonObject.has("openid")){
-                    openid = jsonObject.getString("openid");
+                    String openid = jsonObject.getString("openid");
+                    openId.setOpenId(openid);
+                }
+                if (jsonObject.has("unionid")){
+                    String unionid = jsonObject.getString("unionid");
+                    openId.setUnionId(unionid);
                 }
             } else {
                 log.info("failed,resp code = " + statusCode+ ",return body = " + EntityUtils.toString(response.getEntity()));
@@ -162,6 +175,6 @@ public class WxLoginService {
         }
 
         //openid = "oy5vk5dB6ahNPJlkCNrC5FOpMyEE";
-        return openid;
+        return openId;
     }
 }

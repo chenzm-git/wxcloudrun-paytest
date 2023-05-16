@@ -12,4 +12,6 @@ public class OpenId {
 
     private String openId;
 
+    private String unionId;
+
 }

@@ -121,7 +121,7 @@ public class PayService {
         }
 
         //现有code获取openid
-        String openid = wxLoginService.jxcode(code);
+        String openid = wxLoginService.jxcode(code).getOpenId();
         
         if (openid != null && !"".equals(openid)){
 

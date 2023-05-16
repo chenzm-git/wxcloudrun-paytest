@@ -10,7 +10,7 @@ import lombok.Data;
 @Data
 public class UserUsed {
 
-    private String openId;
+    private String unionId;
 
     private int token;
 }

@@ -24,7 +24,7 @@ public class UserInfo {
 
     private String wxOpenId;
 
-    private String wcUnionId;
+    private String wxUnionId;
 
     private Long regTime;
 

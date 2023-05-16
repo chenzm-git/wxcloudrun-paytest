@@ -28,9 +28,9 @@ public class WxLoginController {
 
     @ApiOperation(notes = "根据jscode查询openid", value = "根据jscode查询openid")
     @PostMapping(value = "/user/jxcode")
-    public String jxcode(@RequestBody String code){
+    public OpenId jxcode(@RequestBody String code){
         log.info("code 输入 : " + code);
-        String output = wxLoginService.jxcode(code);
+        OpenId output = wxLoginService.jxcode(code);
         log.info("openid 输出 : " + output);
         return output;
     }
@@ -68,7 +68,7 @@ public class WxLoginController {
     @ApiOperation(notes = "更新使用限额", value = "更新使用限额，传入本次使用token数")
     @PostMapping(value = "/user/updateUsage")
     public UserUsage updateUsage(@RequestBody UserUsed userUsed){
-        log.info("更新用户使用限额：" + userUsed.getOpenId());
+        log.info("更新用户使用限额：" + userUsed.getUnionId());
 
         return wxLoginService.updateUsage(userUsed);
     }
